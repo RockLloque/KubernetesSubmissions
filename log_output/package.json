@@ -1,0 +1,9 @@
+{
+  "name": "app1",
+  "version": "1.0.0",
+  "description": "Solution for Problem 1 Chapter 2",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
