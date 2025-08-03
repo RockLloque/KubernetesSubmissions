@@ -12,6 +12,7 @@ async fn main() -> Result<()> {
 
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
 
+    println!("Sever starting on port: {port}");
     axum::serve(listener, app).await?;
     Ok(())
 }
