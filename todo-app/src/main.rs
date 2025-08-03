@@ -1,9 +1,11 @@
+use std::env;
+
 use anyhow::Result;
 use axum::{Router, extract::State, routing::get};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let port = "3000".to_string();
+    let port = env::var("PORT").unwrap_or("3000".to_string()).to_string();
     let app = Router::new().route("/", get(root).with_state(port.clone()));
 
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
