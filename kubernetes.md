@@ -1,3 +1,10 @@
+# Instructions
+
+1. Create Dockerfile
+2. build docker image `docker create -t docker-image-name .` 
+3. Create `manifests/deployment.yaml`
+4. kubernetes apply `deployment`: ` kubectl apply -f manifests/deployment.yaml`
+5. (Optional): check if pods are active: `kubectl get pods -l app=name` name is found in `deployment.yaml`: spec -> containers -> - name
 
 
 # Kubernetes Basics
