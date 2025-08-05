@@ -2,6 +2,8 @@
 
 1. Create Dockerfile
 2. build docker image `docker create -t docker-image-name .` 
+    1. tag docker image: `docker tag docker-image-name temibonn/docker-image-name:latest` (`latest` is the tag and can change)
+    2. push it to docker hub: docker push `temibonn/docker-image-name:latest`
 3. Create `manifests/deployment.yaml`
 4. kubernetes apply `deployment`: ` kubectl apply -f manifests/deployment.yaml` (Path can be local or **URL**)
 5. (Optional): check if pods are active: `kubectl get pods -l app=name` name is found in `deployment.yaml`: spec -> containers -> - name
