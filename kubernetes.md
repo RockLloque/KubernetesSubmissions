@@ -1,5 +1,14 @@
 # Instructions
 
+## System
+### get current cluster 
+`kubectl config current-context `
+
+### describe deployment
+`kubectl config current-context `
+
+### Deployment steps 
+
 1. Create Dockerfile
 2. build docker image `docker create -t docker-image-name .` 
     1. tag docker image: `docker tag docker-image-name temibonn/docker-image-name:latest` (`latest` is the tag and can change)
@@ -8,6 +17,14 @@
 4. kubernetes apply `deployment`: ` kubectl apply -f manifests/deployment.yaml` (Path can be local or **URL**)
 5. (Optional): check if pods are active: `kubectl get pods -l app=name` name is found in `deployment.yaml`: spec -> containers -> - name
 
+### Inspect Kubernetes Deployments
+1. List deployments: `kubectl get deployments`
+2. Describe deployment: `kubectl describe deployment-name`
+
+
+### Inspect Kubernetes Pods
+1. List pods: `kubectl get pods`
+2. Describe pod: `kubectl describe pod-name`
 
 # Kubernetes Basics
 
