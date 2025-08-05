@@ -3,7 +3,7 @@
 1. Create Dockerfile
 2. build docker image `docker create -t docker-image-name .` 
 3. Create `manifests/deployment.yaml`
-4. kubernetes apply `deployment`: ` kubectl apply -f manifests/deployment.yaml`
+4. kubernetes apply `deployment`: ` kubectl apply -f manifests/deployment.yaml` (Path can be local or **URL**)
 5. (Optional): check if pods are active: `kubectl get pods -l app=name` name is found in `deployment.yaml`: spec -> containers -> - name
 
 
@@ -15,7 +15,7 @@
 `Microservices are small, autonomous services that work together`
 Opposite: Monolith.
 
-Microservice applications can compose of serveral, even dozens independently operatinng services.
+Microservice applications can compose of serveral, even dozens independently operating services.
 
 ### What is Kubernetes?
 `Kuberenetes is an open-source system for automatic deployment, scaling and management of containerized applications.`
@@ -55,4 +55,12 @@ Pod is an abstraction around one or more containers. It provides context so that
 ### What is a Deployment resource?
 It takes care of the deployment. It tells Kubernetes what container you want, how they should be running and how many of them should be running.
 
-**Replica sets**: Replica Sets are used to tell how many replicas of a Pod should be running. They are managed by the deployments
+**Replica sets**: Replica Sets are used to tell how many replicas of a Pod should be running. They are managed by the deployments.
+
+### Declacritive configuration with Deployment.yaml
+
+**anti-patterns:
+1. Deleting a deployment: This should be the option of last resort! Instead: Create a new Docker image and replace the **tag** of the docker image in the delpoyment.yaml with the new tag.
+2. Imperative config: Always use the declarative approach with the `deployment.yaml`.
+
+
