@@ -17,3 +17,6 @@ spec:
           image: temibonn/todo-app:latest
           ports:
             - containerPort: 3000
+          env:
+            - name: PORT
+              value: "5000"
