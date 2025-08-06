@@ -7,6 +7,9 @@
 ### describe deployment
 `kubectl config current-context `
 
+### port-forwarding
+`kubectl port-forward pod-name [LOCAL_PORT]:[REMOTE_PORT]`
+
 ### Deployment steps 
 
 1. Create Dockerfile
