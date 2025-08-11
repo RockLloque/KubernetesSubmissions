@@ -1,5 +1,22 @@
 # Instructions
 
+## kubernetes:
+### Create local k3d registry
+ `k3d registry create localregistry.localhost --port 5050`
+
+# You can now use the registry like this (example):
+# 1. create a new cluster that uses this registry
+k3d cluster create --registry-use k3d-localregistry.localhost:5050
+
+# 2. tag an existing local image to be pushed to the registry
+docker tag nginx:latest k3d-localregistry.localhost:5050/mynginx:v0.1
+
+# 3. push that image to the registry
+docker push k3d-localregistry.localhost:5050/mynginx:v0.1
+
+# 4. run a pod that uses this image
+kubectl run mynginx --image k3d-localregistry.localhost:5050/mynginx:v0.1 
+
 ## System
 ### get current cluster 
 `kubectl config current-context `
@@ -86,3 +103,52 @@ It takes care of the deployment. It tells Kubernetes what container you want, ho
 2. Imperative config: Always use the declarative approach with the `deployment.yaml`.
 
 
+## Introduction to Networking
+
+We have (at least) 3 layers that need network configurations. 
+1. The server that is hosted in the **Docker Container**
+2. The docker container.
+3. The kubernetes pod.
+
+**Docker** and **Kubernetes** (`kubectl`) can use the `port-forward` command.
+Port-forwarding is used in Kubernetes to forward a local port to a pod. It is not meant for production! Use it for debugging and developement purposes.
+
+
+To forward a port in Kubernetes we need either:
+- a `Service` resource
+- an `Ingress` resource
+- a `Gateway API` (most recent solution)
+
+### Example exposing ports
+A cluster with 2 agents and a load balancer is created.
+The loadbalancer is exposed on the cluster port `8081`, mapped to port `80` on the load balancer.
+Agent 0 is exposed on port `8082` and mapped to port `30080` on the agent
+` k3d cluster create --port 8082:30080@agent:0 -p 8081:80@loadbalancer --agents 2`
+
+
+### Service
+Because kubernetes pods are **ephemeral** (can be created and terminated at any moment), they cannot be used for communication with the application.
+
+**Service resources** have the task of managing the application's accessibility, ensuring that it can be reached by connections originating both,
+inside and outside the cluster
+
+Example `service.yaml`:
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hashresponse
+spec:
+  type: NodePort
+  selector:
+    app: hashresponse
+  ports:
+    - name: http
+      nodePort: 30080
+      protocol: TCP
+      port: 1234 # Port in the cluster
+      targetPort: 3000
+```
+
+nodeports of type `NodePort` not used in production as they are not configurable and open to **all of the nodes**.
+Use a nodePort of type `LoadBalancer` instead.
