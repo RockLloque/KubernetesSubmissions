@@ -4,25 +4,25 @@
 ### Create local k3d registry
  `k3d registry create localregistry.localhost --port 5050`
 
-# You can now use the registry like this (example):
-# 1. create a new cluster that uses this registry
-k3d cluster create --registry-use k3d-localregistry.localhost:5050
+You can now use the registry like this (example):
+1. create a new cluster that uses this registry
+`k3d cluster create --registry-use k3d-localregistry.localhost:5050`
 
-# 2. tag an existing local image to be pushed to the registry
-docker tag nginx:latest k3d-localregistry.localhost:5050/mynginx:v0.1
+2. tag an existing local image to be pushed to the registry
+`docker tag nginx:latest k3d-localregistry.localhost:5050/mynginx:v0.1`
 
-# 3. push that image to the registry
-docker push k3d-localregistry.localhost:5050/mynginx:v0.1
+3. push that image to the registry
+`docker push k3d-localregistry.localhost:5050/mynginx:v0.1`
 
-# 4. run a pod that uses this image
-kubectl run mynginx --image k3d-localregistry.localhost:5050/mynginx:v0.1 
+4. run a pod that uses this image
+`kubectl run mynginx --image k3d-localregistry.localhost:5050/mynginx:v0.1`
 
 ## System
 ### get current cluster 
 `kubectl config current-context `
 
 ### describe deployment
-`kubectl config current-context `
+`kubectl describe deployment`
 
 ### port-forwarding
 `kubectl port-forward pod-name [LOCAL_PORT]:[REMOTE_PORT]`
@@ -152,3 +152,8 @@ spec:
 
 nodeports of type `NodePort` not used in production as they are not configurable and open to **all of the nodes**.
 Use a nodePort of type `LoadBalancer` instead.
+
+
+### Ingress
+It is an **Incoming Network Access resource**.
+Different type of resource from service.
