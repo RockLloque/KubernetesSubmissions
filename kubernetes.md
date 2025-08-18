@@ -155,5 +155,9 @@ Use a nodePort of type `LoadBalancer` instead.
 
 
 ### Ingress
+Ingress is a native kubernetes resource that allows for the mapping of external DNS traffic to an internal Kubernetes service endpoint.
+Ingress: Traffic into the cluster.
+Egress: Traffic out of the cluster.
 It is an **Incoming Network Access resource**.
 Different type of resource from service.
+An Ingress resource only defines the rules for routing (HTTP/HTTPS) traffic
