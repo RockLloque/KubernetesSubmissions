@@ -16,7 +16,7 @@ const printRandomHash = (hash) => {
 setInterval(printRandomHash, 5000, randomHash);
 
 
-app.get('/', (_req, res) => res.send(printRandomHash(randomHash)))
+app.get('/', (_req, res) => res.send(randomHash(randomHash)))
 
 app.listen(port, () => console.log(`Listening on port: ${port}`))
 
