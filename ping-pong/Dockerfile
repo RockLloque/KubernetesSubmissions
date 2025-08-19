@@ -4,6 +4,7 @@ FROM node:alpine3.22 as base
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+COPY tsconfig.json ./
 
 RUN npm ci
 
@@ -12,7 +13,7 @@ RUN npm ci
 # ---- Build ----
 FROM base as build
 COPY . .
-RUN npm build
+RUN npm run build
 
 
 
