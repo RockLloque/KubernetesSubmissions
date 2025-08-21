@@ -57,7 +57,7 @@ Opposite: Monolith.
 Microservice applications can compose of serveral, even dozens independently operating services.
 
 ### What is Kubernetes?
-`Kuberenetes is an open-source system for automatic deployment, scaling and management of containerized applications.`
+`Kubernetes is an open-source system for automatic deployment, scaling and management of containerized applications.`
 The main responsibility of an orchestration-system is starting and stopping of containers.
 
 ### What is a cluster (with k3d)?
@@ -100,7 +100,7 @@ It takes care of the deployment. It tells Kubernetes what container you want, ho
 
 **anti-patterns:
 1. Deleting a deployment: This should be the option of last resort! Instead: Create a new Docker image and replace the **tag** of the docker image in the delpoyment.yaml with the new tag.
-2. Imperative config: Always use the declarative approach with the `deployment.yaml`.
+2. Imperative config: Instead always use the declarative approach with the `deployment.yaml`.
 
 
 ## Introduction to Networking
@@ -161,3 +161,14 @@ Egress: Traffic out of the cluster.
 It is an **Incoming Network Access resource**.
 Different type of resource from service.
 An Ingress resource only defines the rules for routing (HTTP/HTTPS) traffic
+
+
+## Introduction to storage
+Storing data in Kubernetes is challenging because containers are ephemeral.
+Kubernetes communicates with storage with **control plane interfaces**.
+External storage solutions that can be linked to Kubernetes are called **Volumes**. 
+
+### emptyDir volumes
+shared filesystems **inside** a pod -> tied to the pods lifecycle.
+It can be used as a chache or share files between containers in a pod.
+location on node: `/var/lib/kubelet/pods/{podid}/volumes/kubernetes.io~empty-dir/`
