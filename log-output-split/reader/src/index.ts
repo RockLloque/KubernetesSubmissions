@@ -1,13 +1,14 @@
-
 import express from 'express';
-
-
+import { readFileSync } from 'fs';
 
 const app = express();
-const PORT = process.env.PORT ?? 3001;
+const PORT = process.env.PORT ?? 3000;
+const PATH = "/usr/src/app/log/log.txt";
 
-let count = 0;
+app.get("/logs", (_req, res) => {
+  const log = readFileSync(PATH, { encoding: 'utf8' });
+  return res.send(`<pre>${log}</pre>`);
+});
 
-app.get("/pingpong", (_req, res) => `PingPong counter: ${++count}`);
-app.listen(PORT, () => console.log(`PingPong is listening on port: ${PORT}`))
+app.listen(PORT, () => console.log(`Reader app is listening on port: ${PORT}`))
 
