@@ -1,5 +1,5 @@
 {
-  "name": "ping-pong",
+  "name": "log-output-reader",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
