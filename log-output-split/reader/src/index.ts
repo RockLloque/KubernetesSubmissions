@@ -7,6 +7,7 @@ const PATH = "/usr/src/app/log/log.txt";
 
 app.get("/logs", (_req, res) => {
   const log = readFileSync(PATH, { encoding: 'utf8' });
+  console.log(log);
   return res.send(`<pre>${log}</pre>`);
 });
 

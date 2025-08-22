@@ -7,6 +7,12 @@ const PATH = "/usr/src/app/log/log.txt";
 
 
 setInterval(() => {
-  const logLine = `${new Date().toISOString()}: ${randomHash}`;
-  appendFile(PATH, logLine, (err => console.error(`Error writing ${logLine}: ${err}`)));
+  const logLine = `${new Date().toISOString()}: ${randomHash}\n`;
+  appendFile(PATH, logLine, (err) => {
+    if (err) {
+      console.error(`Error writing ${logLine}: ${err}`);
+    } else {
+      console.log(logLine);
+    }
+  });
 }, 5000);
