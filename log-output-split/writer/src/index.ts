@@ -1,13 +1,12 @@
+import { appendFile } from "fs";
 
-import express from 'express';
+const randomHash = crypto.randomUUID();
+
+const PATH = "/usr/src/app/log/log.txt";
 
 
 
-const app = express();
-const PORT = process.env.PORT ?? 3001;
-
-let count = 0;
-
-app.get("/pingpong", (_req, res) => `PingPong counter: ${++count}`);
-app.listen(PORT, () => console.log(`PingPong is listening on port: ${PORT}`))
-
+setInterval(() => {
+  const logLine = `${new Date().toISOString()}: ${randomHash}`;
+  appendFile(PATH, logLine, (err => console.error(`Error writing ${logLine}: ${err}`)));
+}, 5000);
