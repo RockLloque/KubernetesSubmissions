@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output-dep
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      volumes:
+        - name: log-output-vol
+          emptyDir: {}
+      containers:
+        - name: log-output-writer
+          image: temibonn/log-output-writer:v1 
+          volumeMounts:
+            - name: log-output-vol
+              mountPath: /usr/src/app/log
+        - name: log-output-reader
+          image: temibonn/log-output-reader:v1 
+          volumeMounts:
+            - name: log-output-vol
+              mountPath: /usr/src/app/log
+
