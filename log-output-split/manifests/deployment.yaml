@@ -17,12 +17,12 @@ spec:
           emptyDir: {}
       containers:
         - name: log-output-writer
-          image: temibonn/log-output-writer:v1 
+          image: temibonn/log-output-writer:v1.1
           volumeMounts:
             - name: log-output-vol
               mountPath: /usr/src/app/log
         - name: log-output-reader
-          image: temibonn/log-output-reader:v1 
+          image: temibonn/log-output-reader:v1.1
           volumeMounts:
             - name: log-output-vol
               mountPath: /usr/src/app/log
