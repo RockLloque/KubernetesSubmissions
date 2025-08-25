@@ -46,6 +46,10 @@ You can now use the registry like this (example):
 1. List pods: `kubectl get pods`
 2. Describe pod: `kubectl describe pod-name`
 
+
+## Docker
+### Create folder in docker container:
+`docker exec docker-container-name mkdir -p folder-path`
 # Kubernetes Basics
 
 ## First Deploy
@@ -172,3 +176,32 @@ External storage solutions that can be linked to Kubernetes are called **Volumes
 shared filesystems **inside** a pod -> tied to the pods lifecycle.
 It can be used as a chache or share files between containers in a pod.
 location on node: `/var/lib/kubelet/pods/{podid}/volumes/kubernetes.io~empty-dir/`
+
+### Persistent Volume
+Cluster-wide resource that represents a piece of storage in the cluster.
+Lifecycle independent -> outlives the pod that it is attached to.
+**Local Persistent Volumes should not be used in production!**
+Example:
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-pv
+spec:
+  storageClassName: my-example-pv # this is the name you are using later to claim this volume
+  capacity:
+    storage: 1Gi # Could be e.q. 500Gi. Small amount is to preserve space when testing locally
+  volumeMode: Filesystem # This declares that it will be mounted into pods as a directory
+  accessModes:
+  - ReadWriteOnce
+  local:
+    path: /tmp/kube
+  nodeAffinity: ## This is only required for local, it defines which nodes can access it
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3d-k3s-default-agent-0
+```
