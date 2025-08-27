@@ -205,3 +205,22 @@ spec:
           values:
           - k3d-k3s-default-agent-0
 ```
+
+### Persistent Volume Claim 
+When a PVC is created Kubernetes finds an appropiate PV that satisfies the claim's requirement and binds them together.
+
+
+Example:
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: image-claim # name of the volume claim, this will be used in the deployment
+spec:
+  storageClassName: my-example-pv # this is the name of the persistent volume we are claiming
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+```
