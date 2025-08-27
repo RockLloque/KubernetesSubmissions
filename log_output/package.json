@@ -1,11 +1,22 @@
 {
-  "name": "app1",
+  "name": "log_ouput",
   "version": "1.0.0",
-  "description": "Solution for Problem 1 Chapter 2",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "express": "^5.1.0"
