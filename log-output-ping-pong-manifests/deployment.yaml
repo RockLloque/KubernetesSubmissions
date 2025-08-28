@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output-ping-pong-dep
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output-ping-pong
+  template:
+    metadata:
+      labels:
+        app: log-output-ping-pong
+    spec:
+      volumes:
+        - name: log-output-ping-pong-vol
+          persistentVolumeClaim:
+            claimName: log-output-ping-pong-claim
+      containers:
+        - name: log-output
+          image: temibonn/log-output:v3
+          volumeMounts:
+            - name: log-output-ping-pong-vol
+              mountPath: /tmp/kube
+        - name: ping-pong
+          image: temibonn/ping-pong:v2
+          volumeMounts:
+            - name: log-output-ping-pong-vol
+              mountPath: /tmp/kube
