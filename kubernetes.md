@@ -224,3 +224,26 @@ spec:
     requests:
       storage: 1Gi
 ```
+
+
+The design choice of PV and PVC has several advantages:
+- **Resuability and Flexibility:**
+    - PVs can outlive Pods
+    - If a Pod is deleted the PVC can reattach to a new Pod
+    - this allows stateful workloads to persist across Pod restarts
+- **Role Decoupling:**
+    - Cluster admins manage and configure available storage backends
+    - Developers just request storage without needing to know the details.
+- **Portability:**
+    - Devs can write manifests with PVCs and not worry about the underlying storage.
+    - This makes applications portable accross enviroments
+- **Dynamic Provisioning:**
+    - With `StorageClass` PVCs can automatically trigger the creation of new PVs on demand
+- **Lifecycle management:**
+    - PVs have `reclaim policies`: `Retain`, `Recycle`, `Delete`
+    - This defines what happens when a PVC is deleted -> keep the data, wipe and reuse or delete the underlying storage.
+
+### Remarks to Exercies 1.11
+Make sure to put the agent that the local path is created on in deployment -> spec -> nodeSelector -> kubernetes.io/hostname 
+and in PersistentVolume -> spec -> nodeAffinity -> required -> matchExpressions -> values
+
