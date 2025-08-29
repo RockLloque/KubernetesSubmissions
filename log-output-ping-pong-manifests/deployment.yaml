@@ -12,18 +12,20 @@ spec:
       labels:
         app: log-output-ping-pong
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3d-mooc-agent-0
       volumes:
         - name: log-output-ping-pong-vol
           persistentVolumeClaim:
             claimName: log-output-ping-pong-claim
       containers:
         - name: log-output
-          image: temibonn/log-output:v3
+          image: temibonn/log-output:v3.0.1
           volumeMounts:
             - name: log-output-ping-pong-vol
               mountPath: /tmp/kube
         - name: ping-pong
-          image: temibonn/ping-pong:v2
+          image: temibonn/ping-pong:v2.0.1
           volumeMounts:
             - name: log-output-ping-pong-vol
               mountPath: /tmp/kube
