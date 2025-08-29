@@ -14,7 +14,8 @@ const randomHashFn = (hash: string) => {
 
 
 const printRandomHash = (hash: string) => {
-  console.log(randomHashFn(hash))
+  const count = readFileSync(PATH, { encoding: 'utf8' });
+  console.log(`${randomHashFn(hash)}\n Ping/ Pongs: ${count}`)
 }
 setInterval(printRandomHash, 5000, randomHash);
 
