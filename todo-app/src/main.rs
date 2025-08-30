@@ -86,10 +86,10 @@ async fn root() -> impl IntoResponse {
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Image Display</title>
+            <title>Todo App</title>
         </head>
         <body>
-            <h1>Latest Image</h1>
+            <h1>Todo App</h1>
             <img src="{}" alt="Latest Image" style="max-width: 100%; height: auto;">
         </body>
         </html>
