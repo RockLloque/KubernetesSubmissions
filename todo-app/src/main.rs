@@ -1,12 +1,13 @@
-use std::env;
 use std::fs::File;
 use std::io::Write;
 use std::time::Duration;
+use std::{env, fs};
 
 use anyhow::Result;
-use axum::{Router, extract::State, routing::get};
+use axum::response::IntoResponse;
+use axum::{Router, routing::get};
 use dotenv::dotenv;
-use reqwest::Client;
+use reqwest::{Client, StatusCode, header};
 use tokio::task;
 use tokio::time;
 
@@ -22,10 +23,10 @@ async fn main() -> Result<()> {
         let client = Client::new();
 
         loop {
-            interval.tick().await;
             if let Err(e) = download_image(&client, url.clone(), image_path.clone()).await {
                 eprintln!("Failed to download image {}", e);
             }
+            interval.tick().await;
         }
     });
 
@@ -38,10 +39,6 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-async fn root(State(port): State<String>) -> String {
-    format!("Server started in port {}", port)
-}
-
 async fn download_image(client: &Client, url: String, image_path: String) -> Result<()> {
     let response = client.get(url).send().await?.error_for_status()?;
 
@@ -52,4 +49,36 @@ async fn download_image(client: &Client, url: String, image_path: String) -> Res
 
     println!("Image saved");
     Ok(())
+}
+
+async fn root() -> impl IntoResponse {
+    let image_path = env::var("IMAGE_PATH").unwrap_or("/tmp/kube".to_string());
+    let image_file = format!("{}/picture.jpg", image_path);
+
+    if !fs::metadata(&image_file).is_ok() {
+        return (
+            StatusCode::NOT_FOUND,
+            [(header::CONTENT_TYPE, "text/html")],
+            "<html><body><h1>No image found</h1></body></html>".to_string(),
+        )
+            .into_response();
+    }
+
+    // Return an HTML page with the embedded image
+    let html = format!(
+        r#"
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Image Display</title>
+        </head>
+        <body>
+            <h1>Latest Image</h1>
+            <img src="/images/image.jpg" alt="Latest Image" style="max-width: 100%; height: auto;">
+        </body>
+        </html>
+        "#
+    );
+
+    (StatusCode::OK, [(header::CONTENT_TYPE, "text/html")], html).into_response()
 }
