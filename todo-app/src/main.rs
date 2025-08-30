@@ -53,13 +53,29 @@ async fn download_image(client: &Client, url: String, image_path: String) -> Res
 
 async fn root() -> impl IntoResponse {
     let image_path = env::var("IMAGE_PATH").unwrap_or("/tmp/kube".to_string());
-    let image_file = format!("{}/picture.jpg", image_path);
+    let image_file = format!("{}/image.jpg", image_path);
 
     if !fs::metadata(&image_file).is_ok() {
+        let html = format!(
+            r#"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Image not found</title>
+            </head>
+            <body>
+                <h1>Image not found</h1>
+                <p>Could not find image under {} </p>
+            </body>
+            </html>
+            "#,
+            image_file
+        );
+
         return (
             StatusCode::NOT_FOUND,
             [(header::CONTENT_TYPE, "text/html")],
-            "<html><body><h1>No image found</h1></body></html>".to_string(),
+            html,
         )
             .into_response();
     }
@@ -74,10 +90,11 @@ async fn root() -> impl IntoResponse {
         </head>
         <body>
             <h1>Latest Image</h1>
-            <img src="/images/image.jpg" alt="Latest Image" style="max-width: 100%; height: auto;">
+            <img src="{}" alt="Latest Image" style="max-width: 100%; height: auto;">
         </body>
         </html>
-        "#
+        "#,
+        image_file,
     );
 
     (StatusCode::OK, [(header::CONTENT_TYPE, "text/html")], html).into_response()
