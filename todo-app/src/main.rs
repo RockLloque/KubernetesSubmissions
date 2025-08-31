@@ -62,32 +62,15 @@ async fn root() -> impl IntoResponse {
     let image_path = env::var("IMAGE_PATH").unwrap_or(IMAGE_PATH.to_string());
     let image_file = format!("{}/image.jpg", image_path);
 
-    if !fs::metadata(&image_file).is_ok() {
-        let html = format!(
-            r#"
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Image not found</title>
-            </head>
-            <body>
-                <h1>Image not found</h1>
-                <p>Could not find image under {} </p>
-            </body>
-            </html>
-            "#,
+    let image_content = if fs::metadata(&image_file).is_ok() {
+        format!(
+            r#"<img src="{}" alt="Latest Image" style="max-width: 100%; height: auto;">"#,
             image_file
-        );
-
-        return (
-            StatusCode::NOT_FOUND,
-            [(header::CONTENT_TYPE, "text/html")],
-            html,
         )
-            .into_response();
-    }
+    } else {
+        format!(r#"<p>Could not find image under {}</p>"#, image_file)
+    };
 
-    // Return an HTML page with the embedded image
     let html = format!(
         r#"
         <!DOCTYPE html>
@@ -104,15 +87,15 @@ async fn root() -> impl IntoResponse {
         </head>
         <body>
             <h1>Todo App</h1>
+            {}
             <div class="todo-container">
                 <input type="text" maxlength="140" placeholder="Enter todo (max 140 characters)">
                 <button>Create todo</button>
             </div>
-            <img src="{}" alt="Latest Image" style="max-width: 100%; height: auto;">
         </body>
         </html>
         "#,
-        image_file,
+        image_content
     );
 
     (StatusCode::OK, [(header::CONTENT_TYPE, "text/html")], html).into_response()
