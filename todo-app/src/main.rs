@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
 
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
 
-    println!("Sever starting on port: {port}");
+    println!("Todo-App Server starting on port: {port}");
     axum::serve(listener, app).await?;
     Ok(())
 }
@@ -94,9 +94,20 @@ async fn root() -> impl IntoResponse {
         <html>
         <head>
             <title>Todo App</title>
+            <style>
+                .todo-container {{
+                    display: flex;
+                    gap: 10px;
+                    margin: 20px 0;
+                }}
+            </style>
         </head>
         <body>
             <h1>Todo App</h1>
+            <div class="todo-container">
+                <input type="text" maxlength="140" placeholder="Enter todo (max 140 characters)">
+                <button>Create todo</button>
+            </div>
             <img src="{}" alt="Latest Image" style="max-width: 100%; height: auto;">
         </body>
         </html>

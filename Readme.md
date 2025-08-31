@@ -11,3 +11,4 @@
 - [1.10](https://github.com/RockLloque/KubernetesSubmissions/tree/1.10)
 - [1.11](https://github.com/RockLloque/KubernetesSubmissions/tree/1.11)
 - [1.12](https://github.com/RockLloque/KubernetesSubmissions/tree/1.12)
+- [1.13](https://github.com/RockLloque/KubernetesSubmissions/tree/1.13)
