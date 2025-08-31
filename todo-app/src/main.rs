@@ -11,6 +11,8 @@ use reqwest::{Client, StatusCode, header};
 use tokio::task;
 use tokio::time;
 
+static IMAGE_PATH: &'static str = "/usr/local";
+
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenv().ok();
@@ -19,7 +21,7 @@ async fn main() -> Result<()> {
     task::spawn(async {
         let mut interval = time::interval(Duration::from_secs(60 * 10)); // every 10 minutes
         let url = env::var("URL").unwrap_or("https://picsum.photos/1200".to_string());
-        let image_path = env::var("IMAGE_PATH").unwrap_or("/tmp/kube".to_string());
+        let image_path = env::var("IMAGE_PATH").unwrap_or(IMAGE_PATH.to_string());
         let client = Client::new();
 
         loop {
@@ -52,7 +54,7 @@ async fn download_image(client: &Client, url: String, image_path: String) -> Res
 }
 
 async fn root() -> impl IntoResponse {
-    let image_path = env::var("IMAGE_PATH").unwrap_or("/tmp/kube".to_string());
+    let image_path = env::var("IMAGE_PATH").unwrap_or(IMAGE_PATH.to_string());
     let image_file = format!("{}/image.jpg", image_path);
 
     if !fs::metadata(&image_file).is_ok() {
