@@ -14,7 +14,7 @@ spec:
     spec:  
       containers:
         - name: todo-app
-          image: temibonn/todo-app:latest
+          image: temibonn/todo-app:v1
           ports:
             - containerPort: 3000
           env:
