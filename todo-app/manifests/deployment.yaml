@@ -20,7 +20,7 @@ spec:
             claimName: todo-app-claim
       containers:
         - name: todo-app
-          image: temibonn/todo-app:v1.1
+          image: temibonn/todo-app:v1.1.3
           ports:
             - containerPort: 3001
           env:
