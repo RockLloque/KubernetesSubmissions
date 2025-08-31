@@ -19,10 +19,15 @@ async fn main() -> Result<()> {
     let port = env::var("PORT").unwrap_or("3000".to_string()).to_string();
 
     task::spawn(async {
-        let mut interval = time::interval(Duration::from_secs(60 * 10)); // every 10 minutes
         let url = env::var("URL").unwrap_or("https://picsum.photos/1200".to_string());
         let image_path = env::var("IMAGE_PATH").unwrap_or(IMAGE_PATH.to_string());
+        let duration: u64 = env::var("DOWNLOAD_DURATION")
+            .map(|s| s.parse().unwrap_or(60 * 10))
+            .unwrap_or(60 * 10);
+        println!("Download duration: {duration}");
+
         let client = Client::new();
+        let mut interval = time::interval(Duration::from_secs(duration)); // every 10 minutes
 
         loop {
             if let Err(e) = download_image(&client, url.clone(), image_path.clone()).await {
