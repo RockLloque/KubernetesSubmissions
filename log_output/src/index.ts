@@ -1,11 +1,16 @@
 import { readFileSync } from "fs";
 import crypto from "crypto";
 import express from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
 const randomHash = crypto.randomUUID();
-const port = '3000';
+const PORT = process.env.PORT ?? '3000';
+const PING_PONG_PORT = process.env.PING_PONG_PORT ?? '3001';
+const PING_PONG_SERVICE_NAME = process.env.PING_PONG_SERVICE_NAME ?? 'ping-pong-svc';
 const PATH = "/tmp/kube/ping.txt";
 
 const randomHashFn = (hash: string) => {
@@ -25,6 +30,6 @@ app.get('/', (_req, res) => {
   return res.send(`${randomHashFn(randomHash)}\nPing / Pongs: ${count}`);
 })
 
-app.listen(port, () => console.log(`Listening on port: ${port}`))
+app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
 
 
