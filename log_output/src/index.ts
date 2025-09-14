@@ -26,7 +26,7 @@ app.get('/', async (_req, res) => {
       throw new Error(`Ping Pong service under ${PING_PONG_PATH} returned the error: ${resp.status} `);
     }
 
-    const count = await resp.text() ?? 0;
+    const count = Number(await resp.text()) ?? 0;
 
     return res.send(`${randomHashFn(randomHash)}\nPing / Pongs: ${count}`);
   } catch (error: any) {
