@@ -14,6 +14,6 @@ spec:
     spec:  
       containers:
         - name: log-output
-          image: temibonn/log-output:v2
+          image: temibonn/log-output:v3.1.1
           ports:
             - containerPort: 3000
