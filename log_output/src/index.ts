@@ -10,7 +10,10 @@ const randomHash = crypto.randomUUID();
 const PORT = process.env.PORT ?? '3000';
 const PING_PONG_PORT = process.env.PING_PONG_PORT ?? '3001';
 const PING_PONG_SERVICE_NAME = process.env.PING_PONG_SERVICE_NAME ?? 'ping-pong-svc';
-const PING_PONG_PATH = `http://${PING_PONG_SERVICE_NAME}:${PING_PONG_PORT}`;
+const PING_PONG_SUBDIRECTORY = process.env.PING_PONG_SUBDIRECTORY ?? 'pings';
+const PING_PONG_PATH = `http://${PING_PONG_SERVICE_NAME}:${PING_PONG_PORT}/${PING_PONG_SUBDIRECTORY}`;
+
+console.log(`path: ${PING_PONG_PATH}`);
 
 const randomHashFn = (hash: string) => {
   return `${new Date().toISOString()}: ${hash}`;
