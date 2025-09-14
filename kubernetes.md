@@ -247,3 +247,7 @@ The design choice of PV and PVC has several advantages:
 Make sure to put the agent that the local path is created on in deployment -> spec -> nodeSelector -> kubernetes.io/hostname 
 and in PersistentVolume -> spec -> nodeAffinity -> required -> matchExpressions -> values
 
+
+## Chapter 3: More building blocks
+### Networking between pods
+
