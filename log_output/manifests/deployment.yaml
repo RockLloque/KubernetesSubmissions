@@ -14,6 +14,16 @@ spec:
     spec:  
       containers:
         - name: log-output
-          image: temibonn/log-output:v3.1.1
+          image: temibonn/log-output:v3.1.2
           ports:
             - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: PING_PONG_SERVICE_NAME  
+              value: ping-pong-svc
+            - name: PING_PONG_PORT  
+              value: "3001"
+            - name: PING_PONG_SUBDIRECTORY 
+              value: "pings"    
+
