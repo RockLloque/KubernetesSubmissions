@@ -14,8 +14,8 @@ app.get("/pingpong", (_req, res) => {
   res.send(`PingPong counter: ${count}`);
 });
 
-app.get("/pings", () => {
-  return count;
+app.get("/pings", (_req, res) => {
+  res.send(count.toString());
 })
 
 app.listen(PORT, () => console.log(`PingPong is listening on port: ${PORT}`))
