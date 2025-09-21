@@ -1,0 +1,8 @@
+debug
+target
+
+# config
+# dotenv environment variable files
+.env
+.env.*
+!.env.example
