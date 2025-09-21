@@ -6,6 +6,7 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
+    console_error_panic_hook::set_once();
     let (task, task_writer) = signal(Item::default());
     let (tasks, tasks_writer) = signal(Vec::<Item>::new());
     let (counter, counter_writer) = signal(0u32);
