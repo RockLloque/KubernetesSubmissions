@@ -1,0 +1,32 @@
+# Build Stage
+FROM rust:1.88-slim-bullseye as builder
+
+
+# Install dependencies for building
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  pkg-config \
+  libssl-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN cargo install trunk wasm-bindgen-cli
+RUN rustup target add wasm32-unknown-unknown
+
+WORKDIR /app
+
+COPY Cargo.toml Cargo.lock ./
+COPY index.html ./
+COPY src ./src
+
+RUN trunk build --release
+
+# Runtime
+FROM nginx:stable-alpine AS runtime
+
+#Remove default nginx static html
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=builder /app/dist  /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD [ "nginx", "-g", "daemon off;" ]
