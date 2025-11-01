@@ -1,6 +1,8 @@
 # Build Stage
 FROM rust:1.88-slim-bullseye as builder
 
+ARG HERO_IMAGE_URL=https://picsum.photos/800
+ENV HERO_IMAGE_URL=${HERO_IMAGE_URL}
 
 # Install dependencies for building
 RUN apt-get update && apt-get install -y --no-install-recommends \
