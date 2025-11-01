@@ -1,14 +1,15 @@
-use crate::core::models::Item;
+use crate::{components::hero_image::HeroImage, core::models::Item};
 use leptos::prelude::*;
 
 #[component]
-pub fn Home() -> impl IntoView {
+pub fn Home(hero_image_url: String) -> impl IntoView {
     let (task, task_writer) = signal(Item::default());
     let (tasks, tasks_writer) = signal(Vec::<Item>::new());
     let (counter, counter_writer) = signal(0u32);
 
     view! {
         <div>
+            <HeroImage image_url=hero_image_url />
             <div>List of Items</div>
                 <div>
                 <input type="text"  on:input= move |event| {

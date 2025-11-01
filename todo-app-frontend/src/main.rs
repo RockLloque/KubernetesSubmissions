@@ -1,5 +1,6 @@
 use leptos::prelude::*;
 
+mod api;
 mod components;
 mod core;
 use crate::components::Home;
@@ -11,9 +12,14 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
+    let hero_image_url = option_env!("HERO_IMAGE_URL")
+        .unwrap_or("https://picsum.photos/80")
+        .to_string();
+    dbg!(&hero_image_url);
+
     view! {
         <main>
-            <Home />
+            <Home hero_image_url=hero_image_url/>
         </main>
     }
 }
