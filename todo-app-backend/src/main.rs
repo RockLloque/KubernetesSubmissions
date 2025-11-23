@@ -1,17 +1,26 @@
-use std::fs::File;
-use std::io::Write;
 use std::time::Duration;
 use std::{env, fs};
 
 use anyhow::Result;
+use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use axum::{Router, routing::get};
 use dotenv::dotenv;
-use reqwest::{Client, StatusCode, header};
+use reqwest::{Client, header};
+use tokio::fs::File;
+use tokio::io::AsyncWriteExt;
 use tokio::task;
 use tokio::time;
+use tower_http::cors::{CorsLayer, Any};
+
+use crate::core::models::AppState;
+use crate::routes::todos::{create_todo, get_todos};
+
+mod core;
+mod routes;
 
 static IMAGE_PATH: &'static str = "/usr/local";
+static TODOS_PATH: &'static str = "./todos";
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -37,7 +46,20 @@ async fn main() -> Result<()> {
         }
     });
 
-    let app = Router::new().route("/", get(root).with_state(port.clone()));
+    let todos_path = env::var("TODOS_PATH").unwrap_or(TODOS_PATH.to_string());
+
+    let state = AppState { todos_path };
+
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods(Any)
+        .allow_headers(Any);
+
+    let app = Router::new()
+        .route("/", get(root))
+        .route("/todos", get(get_todos).post(create_todo))
+        .layer(cors)
+        .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
 
@@ -51,8 +73,8 @@ async fn download_image(client: &Client, url: String, image_path: String) -> Res
 
     let bytes = response.bytes().await?;
 
-    let mut file = File::create(format!("{}/image.jpg", image_path))?;
-    file.write_all(&bytes)?;
+    let mut file = File::create(format!("{}/image.jpg", image_path)).await?;
+    file.write_all(&bytes).await?;
 
     println!("Image saved");
     Ok(())
@@ -100,3 +122,5 @@ async fn root() -> impl IntoResponse {
 
     (StatusCode::OK, [(header::CONTENT_TYPE, "text/html")], html).into_response()
 }
+
+// Todo API endpoints

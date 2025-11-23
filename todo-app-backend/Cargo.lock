@@ -1194,7 +1194,10 @@ dependencies = [
  "axum",
  "dotenv",
  "reqwest",
+ "serde",
+ "serde_json",
  "tokio",
+ "tower-http",
 ]
 
 [[package]]
