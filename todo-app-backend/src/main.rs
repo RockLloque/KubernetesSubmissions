@@ -1,17 +1,14 @@
+use std::env;
 use std::time::Duration;
-use std::{env, fs};
 
 use anyhow::Result;
-use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::{Router, routing::get};
 use dotenv::dotenv;
-use reqwest::{Client, header};
+use reqwest::Client;
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
 use tokio::task;
 use tokio::time;
-use tower_http::cors::{CorsLayer, Any};
 
 use crate::core::models::AppState;
 use crate::routes::todos::{create_todo, get_todos};
@@ -50,15 +47,8 @@ async fn main() -> Result<()> {
 
     let state = AppState { todos_path };
 
-    let cors = CorsLayer::new()
-        .allow_origin(Any)
-        .allow_methods(Any)
-        .allow_headers(Any);
-
     let app = Router::new()
-        .route("/", get(root))
         .route("/todos", get(get_todos).post(create_todo))
-        .layer(cors)
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
@@ -78,49 +68,6 @@ async fn download_image(client: &Client, url: String, image_path: String) -> Res
 
     println!("Image saved");
     Ok(())
-}
-
-async fn root() -> impl IntoResponse {
-    let image_path = env::var("IMAGE_PATH").unwrap_or(IMAGE_PATH.to_string());
-    let image_file = format!("{}/image.jpg", image_path);
-
-    let image_content = if fs::metadata(&image_file).is_ok() {
-        format!(
-            r#"<img src="{}" alt="Latest Image" style="max-width: 100%; height: auto;">"#,
-            image_file
-        )
-    } else {
-        format!(r#"<p>Could not find image under {}</p>"#, image_file)
-    };
-
-    let html = format!(
-        r#"
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Todo App</title>
-            <style>
-                .todo-container {{
-                    display: flex;
-                    gap: 10px;
-                    margin: 20px 0;
-                }}
-            </style>
-        </head>
-        <body>
-            <h1>Todo App</h1>
-            {}
-            <div class="todo-container">
-                <input type="text" maxlength="140" placeholder="Enter todo (max 140 characters)">
-                <button>Create todo</button>
-            </div>
-        </body>
-        </html>
-        "#,
-        image_content
-    );
-
-    (StatusCode::OK, [(header::CONTENT_TYPE, "text/html")], html).into_response()
 }
 
 // Todo API endpoints
