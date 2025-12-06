@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash, Default, Serialize, Deserialize)]
+// TODO: add an order for Todos. space by 10_000
 pub struct Todo {
-    pub id: u32,
+    pub id: Option<String>,
     pub title: String,
     pub description: String,
 }

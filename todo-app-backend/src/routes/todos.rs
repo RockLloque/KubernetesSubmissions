@@ -3,6 +3,7 @@ use axum::extract::State;
 use axum::http::StatusCode;
 
 use anyhow::Result;
+use uuid::Uuid;
 
 use crate::core::models::{AppState, Todo};
 
@@ -33,7 +34,7 @@ pub async fn create_todo(
     State(state): State<AppState>,
     Json(todo): Json<Todo>,
 ) -> Result<StatusCode, StatusCode> {
-    dbg!(&todo);
+    todo.id.get_or_insert(Uuid::new_v4());
     // Read existing todos or create empty vector if file doesn't exist
     let data = match tokio::fs::read_to_string(&state.todos_path).await {
         Ok(d) => d,
