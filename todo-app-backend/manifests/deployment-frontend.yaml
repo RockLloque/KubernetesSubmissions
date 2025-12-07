@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app-frontend
+  template:
+    metadata:  
+      labels:
+        app: todo-app
+    spec:  
+      nodeSelector:
+        kubernetes.io/hostname: k3d-mooc-agent-0
+      containers:
+       -  name: todo-app-frontend
+          image: temibonn/todo-app-frontend:v1.0.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+

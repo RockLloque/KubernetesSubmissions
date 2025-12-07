@@ -7,6 +7,11 @@ spec:
   selector:
     app: todo-app
   ports:
-    - port: 3000 # Port in the cluster ## app door
+    - name: todo-app-frontend
       protocol: TCP
-      targetPort: 3000 # Port your app is running on inside the container ## services internal door
+      port: 3000
+      targetPort: 3000
+    - name: todo-app-backend
+      protocol: TCP
+      targetPort: 3001 # Port your app is running on inside the container ## services internal door
+      port: 3001
