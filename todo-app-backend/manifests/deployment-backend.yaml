@@ -8,9 +8,10 @@ spec:
     matchLabels:
       app: todo-app-backend
   template:
-    metadata:  
+    metadata:
       labels:
-        app: todo-app
+        app: todo-app-backend
+        common: todo-app
     spec:  
       nodeSelector:
         kubernetes.io/hostname: k3d-mooc-agent-0

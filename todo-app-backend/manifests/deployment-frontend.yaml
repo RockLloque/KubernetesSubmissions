@@ -1,16 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-app-dep
+  name: todo-app-frontend-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: todo-app-frontend
   template:
-    metadata:  
+    metadata:
       labels:
-        app: todo-app
+        app: todo-app-frontend
+        common: todo-app
     spec:  
       nodeSelector:
         kubernetes.io/hostname: k3d-mooc-agent-0
