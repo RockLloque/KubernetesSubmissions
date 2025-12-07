@@ -32,9 +32,9 @@ pub async fn get_todos(State(state): State<AppState>) -> Result<Json<Vec<Todo>>,
 /// Create a new todo
 pub async fn create_todo(
     State(state): State<AppState>,
-    Json(todo): Json<Todo>,
+    Json(mut todo): Json<Todo>,
 ) -> Result<StatusCode, StatusCode> {
-    todo.id.get_or_insert(Uuid::new_v4());
+    todo.id.get_or_insert(Uuid::new_v4().to_string());
     // Read existing todos or create empty vector if file doesn't exist
     let data = match tokio::fs::read_to_string(&state.todos_path).await {
         Ok(d) => d,
