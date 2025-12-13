@@ -251,3 +251,36 @@ and in PersistentVolume -> spec -> nodeAffinity -> required -> matchExpressions 
 ## Chapter 3: More building blocks
 ### Networking between pods
 
+
+### Organizing a cluster
+Kubernetes has the concept of namespaces. They can be understood as seperate clusters inside a Kubernetes cluster.
+They help with origination, security and performance.
+Newly created clusters have 3 namespaces out of the box:
+1. `default`:  Cannot be deleted and pointed at by most tools
+2. `kube-system`: Should be left alone
+3. `kube-public`: is not really used right now
+
+Best practice: do not touch existing namespaces. Instead create new ones for seperate tasks.
+Create a new namespace `test` with the command: `kubectl create namespace test`.
+Alternative: create a `.yaml` file and apply it like other kubernetes resources.
+```yaml
+kind: Namespace
+apiVersion: v1
+metadata: 
+    name: test
+    labels:
+        name: test
+```
+Apply with `kubectl appy -f test.yaml`
+See all namespaces with: `kubectl get namespaces`
+If no namespace is defined in resource, it will be attached to the current namespace.
+Specify namespace by:
+- adding flag to create command: `kubectl apply -f pod.yaml --namespace=test `
+- specify namespace in yaml declaration
+
+use `kubens` to switch active namespace.
+
+### Cross Namespace communication
+Kubernetes uses the expanded form of the DNS address to communicate between namespaces:
+`<Service Name>.<Namespace Name>.svc.cluster.local<F7>` 
+The `Namespace Name` component can be omitted for services in the same namespace. 
