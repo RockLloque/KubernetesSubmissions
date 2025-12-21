@@ -252,7 +252,7 @@ and in PersistentVolume -> spec -> nodeAffinity -> required -> matchExpressions 
 ### Networking between pods
 
 
-### Organizing a cluster
+### Namespace
 Kubernetes has the concept of namespaces. They can be understood as seperate clusters inside a Kubernetes cluster.
 They help with origination, security and performance.
 Newly created clusters have 3 namespaces out of the box:
@@ -284,3 +284,17 @@ use `kubens` to switch active namespace.
 Kubernetes uses the expanded form of the DNS address to communicate between namespaces:
 `<Service Name>.<Namespace Name>.svc.cluster.local<F7>` 
 The `Namespace Name` component can be omitted for services in the same namespace. 
+
+### Labels
+Used to further categorize resources in a namespace and to group them.
+Labels are also used by selectors to pick a set of objects.
+Example: add the label `importance=great` to a pod with:
+`kubectl label po <pod-name> importance=great`
+You can now filter by label: `kubectl get pod -l importance`
+
+### Configuring applications
+Kubernetes has 2 resources for configuration management:
+### Secrets
+for sensitive information that are given to containers at runtime
+### ConfigMaps
+For non sensitive information. Changing the ConfigMap will instantly change the behavior of the application.
