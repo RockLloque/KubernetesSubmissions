@@ -1,8 +1,9 @@
 import crypto from "crypto";
 import express from 'express';
 import dotenv from 'dotenv';
-import { readFromLog, writeToLog } from "./volumes/router";
+import { readFromLog, readFromUrl, writeToLog } from "./volumes/router";
 import { env } from './env';
+import { useLog } from "./middleware/log";
 
 dotenv.config();
 
@@ -21,25 +22,8 @@ const randomHashFn = (hash: string) => {
 }
 
 
-
-app.get('/', async (_req, res) => {
-  try {
-    const resp = await fetch(PING_PONG_PATH);
-
-    if (!resp.ok) {
-      throw new Error(`Ping Pong service under ${PING_PONG_PATH} returned the error: ${resp.status} `);
-    }
-
-    const count = await resp.text() ?? 0;
-
-    return res.send(`${randomHashFn(randomHash)}\nPing / Pongs: ${count}`);
-  } catch (error: any) {
-    console.error(error.message);
-    return res
-      .status(500)
-      .send(`${randomHashFn(randomHash)}\nPing / Pongs: Error`);
-  }
-})
+app.use("/", useLog);
+app.get("/", readFromUrl(PING_PONG_PATH, randomHashFn(randomHash)))
 
 app.get("/logs", readFromLog(env.LOG_PATH))
 app.post("/logs", writeToLog(env.LOG_PATH))

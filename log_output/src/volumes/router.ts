@@ -23,3 +23,23 @@ export const readFromLog = (path: string) => (_req: Request, res: Response) => {
   console.log(`Read from file ${path}: ${log}`);
   return res.send(`<pre>${log}</pre>`);
 }
+
+export const readFromUrl = (path: string, randomHash: string) => async (_req: Request, res: Response) => {
+  try {
+    const resp = await fetch(path);
+
+    if (!resp.ok) {
+      throw new Error(`Ping Pong service under ${path} returned the error: ${resp.status} `);
+    }
+
+    const count = await resp.text() ?? 0;
+
+    return res.send(`${randomHash}\nPing / Pongs: ${count}`);
+  } catch (error: any) {
+    console.error(error.message);
+    return res
+      .status(500)
+      .send(`${randomHash}\nPing / Pongs: Error`);
+  }
+
+}
