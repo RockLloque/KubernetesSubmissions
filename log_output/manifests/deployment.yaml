@@ -12,19 +12,32 @@ spec:
     metadata:  
       labels:
         app: log-output
-    spec:  
+    spec:
+      volumes:
+        - name: log-output-config
+          configMap:
+            name: log-output-config
       containers:
         - name: log-output
-          image: temibonn/log-output:v3.1.3
+          image: temibonn/log-output:v3.2
           ports:
             - containerPort: 3000
           env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-config
+                  key: MESSAGE
             - name: PORT
               value: "3000"
-            - name: PING_PONG_SERVICE_NAME  
+            - name: PING_PONG_SERVICE_NAME
               value: ping-pong-svc
-            - name: PING_PONG_PORT  
+            - name: PING_PONG_PORT
               value: "3001"
-            - name: PING_PONG_SUBDIRECTORY 
-              value: "pings"    
+            - name: PING_PONG_SUBDIRECTORY
+              value: "pings"
+          volumeMounts:
+            - name: log-output-config
+              mountPath: /config
+
 
