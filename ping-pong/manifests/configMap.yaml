@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: ping-pong-cfg
+  namespace: exercises
+data:
+  POSTGRES_PORT: "1234"
+  PING_PONG_PORT: "3001"
+  POSTGRES_DB: "appdb"
+  POSTGRES_USER: "appuser"
+  POSTGRES_PASSWORD: "secretpassword" # TODO: encrypt secret
