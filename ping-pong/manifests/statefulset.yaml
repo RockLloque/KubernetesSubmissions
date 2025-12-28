@@ -32,12 +32,12 @@ spec:
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: ping-pong-cfg
+                secretKeyRef:
+                  name: ping-pong-secret
                   key: POSTGRES_PASSWORD
           volumeMounts:
             - name: postgres-db
-              mountPath: /db
+              mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
         name: postgres-db
