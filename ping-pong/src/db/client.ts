@@ -1,17 +1,18 @@
 import { Pool } from 'pg';
+import { env } from '../env'
 
 const pool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  port: parseInt(process.env.POSTGRES_PORT || '5432'),
-  database: process.env.POSTGRES_DB,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  host: env.POSTGRES_HOST,
+  port: env.POSTGRES_PORT,
+  database: env.POSTGRES_DB,
+  user: env.POSTGRES_USER,
+  password: env.POSTGRES_PASSWORD,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
 
-pool.on('error', (err) => {
+pool.on('error', (err: any) => {
   console.error('Unexpected database error:', err);
 });
 

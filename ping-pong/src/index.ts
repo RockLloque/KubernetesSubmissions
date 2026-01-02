@@ -1,17 +1,17 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import {
   initializeDatabase,
   getCount,
   incrementCount,
   checkDatabaseHealth,
   closeDatabaseConnection
-} from './db/client';
+} from './db';
+import { env } from './env';
 
-dotenv.config();
+
 
 const app = express();
-const PORT = process.env.PORT ?? 3001;
+const PORT = env.PORT;
 
 app.get("/pingpong", async (_req, res) => {
   try {
