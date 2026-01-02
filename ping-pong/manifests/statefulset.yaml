@@ -4,15 +4,15 @@ metadata:
   name: ping-pong-stset
   namespace: exercises
 spec:
-  serviceName: ping-pong-svc
+  serviceName: postgres-svc
   replicas: 1
   selector:
     matchLabels:
-      app: ping-pong-app
+      app: postgres-db
   template:
     metadata:
       labels:
-        app: ping-pong-app
+        app: postgres-db
     spec:
       containers:
         - name: postgres

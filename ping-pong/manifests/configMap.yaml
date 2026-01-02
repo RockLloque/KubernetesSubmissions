@@ -5,7 +5,7 @@ metadata:
   namespace: exercises
 data:
   POSTGRES_PORT: "5432"
-  POSTGRES_HOST: "ping-pong-stset-0.ping-pong-svc.exercises.svc.cluster.local"
+  POSTGRES_HOST: "ping-pong-stset-0.postgres-svc.exercises.svc.cluster.local"
   PING_PONG_PORT: "3001"
   POSTGRES_DB: "appdb"
   POSTGRES_USER: "appuser"
