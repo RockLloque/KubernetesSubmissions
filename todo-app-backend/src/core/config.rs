@@ -17,16 +17,6 @@ struct Postgres {
 }
 
 impl Postgres {
-    fn new(host: String, port: u16, db: String, user: String, password: String) -> Self {
-        Self {
-            host,
-            port,
-            db,
-            user,
-            password,
-        }
-    }
-
     fn connection_string(&self) -> String {
         format!(
             "postgres://{}:{}@{}:{}/{}",

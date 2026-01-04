@@ -1,14 +1,22 @@
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
+use uuid::Uuid;
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash, Default, Serialize, Deserialize)]
-// TODO: add an order for Todos. space by 10_000
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Todo {
-    pub id: Option<String>,
+    pub id: Uuid,
+    pub title: String,
+    pub description: String,
+    pub order: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CreateTodo {
     pub title: String,
     pub description: String,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct AppState {
-    pub todos_path: String,
+    pub db: sqlx::PgPool,
 }
