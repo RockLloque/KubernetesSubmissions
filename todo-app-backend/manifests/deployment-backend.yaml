@@ -18,7 +18,8 @@ spec:
         kubernetes.io/hostname: k3d-mooc-agent-0
       containers:
         - name: todo-app-backend
-          image: temibonn/todo-app-backend:v1.0.0
+          image: temibonn/todo-app-backend:v2.0.1
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001
           env:
@@ -32,3 +33,33 @@ spec:
                 configMapKeyRef:
                   name: todo-app-cfg
                   key: DOWNLOAD_DURATION
+            - name: IMAGE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-cfg
+                  key: IMAGE_URL
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-cfg
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-cfg
+                  key: POSTGRES_PORT
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-cfg
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-cfg
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: todo-app-secret
+                  key: POSTGRES_PASSWORD

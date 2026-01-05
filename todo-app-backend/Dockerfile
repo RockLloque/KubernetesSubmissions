@@ -18,6 +18,6 @@ FROM debian:bullseye-slim
 
 COPY --from=builder /app/target/release/todo-app  /usr/local/bin/todo-app
 
-RUN mkdir -p /user/local
+RUN mkdir -p /usr/local
 
 CMD [ "todo-app" ]
