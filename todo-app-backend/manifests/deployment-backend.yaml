@@ -18,8 +18,8 @@ spec:
         kubernetes.io/hostname: k3d-mooc-agent-0
       containers:
         - name: todo-app-backend
-          image: temibonn/todo-app-backend:v2.0.1
-          imagePullPolicy: IfNotPresent
+          image: temibonn/todo-app-backend:v2.0.3
+          imagePullPolicy: Always
           ports:
             - containerPort: 3001
           env:
