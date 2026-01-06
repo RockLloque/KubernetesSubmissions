@@ -1,6 +1,6 @@
 use std::time::Duration;
 use anyhow::Result;
-use serde::{Deserialize, Deserializer};
+use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 struct Postgres {
@@ -30,8 +30,8 @@ pub struct Config {
     #[serde(rename = "PORT", default = "default_port")]
     port: u16,
 
-    #[serde(rename = "DOWNLOAD_DURATION", deserialize_with = "duration_from_secs")]
-    download_duration: Duration, 
+    #[serde(rename = "DOWNLOAD_DURATION")]
+    download_duration_secs: u64,
 
     #[serde(rename = "IMAGE_URL")]
     image_url: String,
@@ -42,7 +42,8 @@ pub struct Config {
 
 impl Config {
     pub fn init() -> Result<Self> {
-        dotenvy::dotenv()?;
+        // Try to load .env file, but don't fail if it doesn't exist (for Kubernetes)
+        dotenvy::dotenv().ok();
 
         let config = match envy::from_env::<Config>() {
             Ok(cfg) => cfg,
@@ -64,7 +65,7 @@ impl Config {
     }
 
     pub fn download_duration(&self) -> Duration {
-        self.download_duration
+        Duration::from_secs(self.download_duration_secs)
     }
 
     pub fn image_url(&self) -> String {
@@ -78,12 +79,4 @@ fn default_port() -> u16 {
 
 fn default_postgres_port() -> u16 {
     5432
-}
-
-fn duration_from_secs<'de, D>(deserializer: D) -> Result<Duration, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let secs = u64::deserialize(deserializer)?;
-    Ok(Duration::from_secs(secs))
 }
