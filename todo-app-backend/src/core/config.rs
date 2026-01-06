@@ -4,15 +4,10 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 struct Postgres {
-    #[serde(rename = "POSTGRES_HOST")]
     host: String,
-    #[serde(rename = "POSTGRES_PORT", default = "default_postgres_port")]
     port: u16,
-    #[serde(rename = "POSTGRES_DB")]
     db: String,
-    #[serde(rename = "POSTGRES_USER")]
     user: String,
-    #[serde(rename = "POSTGRES_PASSWORD")]
     password: String,
 }
 
@@ -27,32 +22,43 @@ impl Postgres {
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    #[serde(rename = "PORT", default = "default_port")]
     port: u16,
 
-    #[serde(rename = "DOWNLOAD_DURATION")]
     download_duration_secs: u64,
 
-    #[serde(rename = "IMAGE_URL")]
     image_url: String,
 
-    #[serde(flatten)]
     postgres: Postgres,
 }
 
 impl Config {
     pub fn init() -> Result<Self> {
-        // Try to load .env file, but don't fail if it doesn't exist (for Kubernetes)
         dotenvy::dotenv().ok();
 
-        let config = match envy::from_env::<Config>() {
-            Ok(cfg) => cfg,
-            Err(e) => {
-                eprintln!("Config err: {}", e);
-                std::process::exit(1);
-            }
+        let port: u16 = std::env::var("PORT")?.parse()?;
+        let image_url = std::env::var("IMAGE_URL")?;
+        let download_duration: u64 = std::env::var("DOWNLOAD_DURATION")?.parse()?;
+
+        let postgres_host = std::env::var("POSTGRES_HOST")?;
+        let postgres_port: u16 = std::env::var("POSTGRES_PORT")?.parse()?;
+        let postgres_db = std::env::var("POSTGRES_DB")?;
+        let postgres_user = std::env::var("POSTGRES_USER")?;
+        let postgres_password = std::env::var("POSTGRES_PASSWORD")?;
+
+        let config = Config {
+            port,
+            download_duration_secs: download_duration,
+            image_url,
+            postgres: Postgres {
+                host: postgres_host,
+                port: postgres_port,
+                db: postgres_db,
+                user: postgres_user,
+                password: postgres_password,
+            },
         };
 
+        dbg!(&config);
         Ok(config)
     }
 
@@ -73,10 +79,3 @@ impl Config {
     }
 }
 
-fn default_port() -> u16 {
-    8080
-}
-
-fn default_postgres_port() -> u16 {
-    5432
-}
