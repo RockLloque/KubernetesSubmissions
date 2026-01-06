@@ -7,8 +7,8 @@ CREATE TABLE todos (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     sorting_order INTEGER NOT NULL DEFAULT 0,
-    CONSTRAINT order_positive CHECK ("order" >= 0)
+    CONSTRAINT order_positive CHECK ("sorting_order" >= 0)
 );
 
 -- Create indexes for common queries
-CREATE INDEX idx_todos_order ON todos("order");
+CREATE INDEX idx_todos_order ON todos("sorting_order");
