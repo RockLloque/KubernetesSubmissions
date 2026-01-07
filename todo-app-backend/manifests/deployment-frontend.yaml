@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: k3d-mooc-agent-0
       containers:
         - name: todo-app-frontend
-          image: temibonn/todo-app-frontend:v1.0.1
+          image: temibonn/todo-app-frontend:v1.1.1
           ports:
             - containerPort: 3000
           env:

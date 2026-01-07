@@ -12,7 +12,7 @@ spec:
             backend:
               service:
                 name: todo-app-svc
-                port: 
+                port:
                   number: 3000
           - path: /todos
             pathType: Prefix
