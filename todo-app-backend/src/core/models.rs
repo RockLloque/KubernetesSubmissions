@@ -7,7 +7,7 @@ pub struct Todo {
     pub id: Uuid,
     pub title: String,
     pub description: String,
-    pub order: i32,
+    pub sorting_order: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
