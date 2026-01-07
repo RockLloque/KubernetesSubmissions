@@ -1,6 +1,6 @@
 use leptos::prelude::*;
 
-// mod api;
+mod api;
 mod components;
 mod core;
 use crate::components::Home;
