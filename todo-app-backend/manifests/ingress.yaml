@@ -19,8 +19,8 @@ spec:
             backend:
               service:
                 name: todo-app-svc
-                port: 
-                  number: 3001
+                port:
+                  number: 3000
   
   
 
