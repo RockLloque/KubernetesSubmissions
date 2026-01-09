@@ -12,7 +12,6 @@ spec:
     metadata:
       labels:
         app: todo-app-backend
-        common: todo-app
     spec:  
       nodeSelector:
         kubernetes.io/hostname: k3d-mooc-agent-0

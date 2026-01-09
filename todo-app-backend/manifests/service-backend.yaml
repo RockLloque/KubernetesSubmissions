@@ -1,17 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-app-svc
+  name: todo-app-backend-svc
   namespace: project
 spec:
   type: ClusterIP
   selector:
-    common: todo-app
+    app: todo-app-backend
   ports:
-    - name: todo-app-frontend
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
     - name: todo-app-backend
       protocol: TCP
       targetPort: 3001 # Port your app is running on inside the container ## services internal door
