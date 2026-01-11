@@ -1,7 +1,7 @@
 use axum::Json;
 use axum::extract::State;
 use axum::http::StatusCode;
-use tracing::{error, instrument};
+use tracing::{error, info, instrument};
 
 use crate::core::models::{AppState, CreateTodo, Todo};
 use crate::core::db;
@@ -19,7 +19,7 @@ pub async fn get_todos(State(state): State<AppState>) -> Result<Json<Vec<Todo>>,
 }
 
 /// Create a new todo
-#[instrument(skip(state), fields(title = %todo.title, title_length = todo.title.len()))]
+#[instrument(skip(state), fields(title = %todo.title, description = %todo.description, title_length = todo.title.len()))]
 pub async fn create_todo(
     State(state): State<AppState>,
     Json(todo): Json<CreateTodo>,
@@ -28,6 +28,7 @@ pub async fn create_todo(
     if todo.title.len() > 120 {
         error!(
             title = %todo.title,
+            description = %todo.description,
             title_length = todo.title.len(),
             max_length = 120,
             "Todo title exceeds maximum length"
@@ -36,9 +37,12 @@ pub async fn create_todo(
     }
 
     match db::create_todo(&state.db, &todo).await {
-        Ok(_) => Ok(StatusCode::CREATED),
+        Ok(_) => {
+            info!(title = %todo.title, description = %todo.description, "Todo created successfully");
+            Ok(StatusCode::CREATED)
+        }
         Err(e) => {
-            error!(error = %e, title = %todo.title, "Failed to create todo");
+            error!(error = %e, title = %todo.title, description = %todo.description, "Failed to create todo");
             Err(StatusCode::INTERNAL_SERVER_ERROR)
         }
     }
