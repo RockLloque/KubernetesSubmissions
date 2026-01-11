@@ -7,7 +7,7 @@ data:
   PORT_FRONTEND: "3000"
   PORT_BACKEND: "3001"
   DOWNLOAD_DURATION: "600"
-  IMAGE_URL: "https://picsum.photos/1200"
+  IMAGE_URL: "https://picsum.photos/1200/800"
   POSTGRES_PORT: "5432"
   POSTGRES_HOST: "todo-app-stset-0.postgres-svc.project.svc.cluster.local"
   POSTGRES_DB: "appdb"
