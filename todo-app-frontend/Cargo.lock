@@ -1613,6 +1613,7 @@ dependencies = [
  "console_error_panic_hook",
  "gloo-net",
  "leptos",
+ "regex",
  "serde",
  "serde_json",
 ]
