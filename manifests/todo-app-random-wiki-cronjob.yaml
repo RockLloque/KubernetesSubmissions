@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: todo-app-random-wiki-crnjb
-              image: temibonn/todo-app-random-wiki-cronjob:1.0
+              image: temibonn/todo-app-random-wiki-cronjob:1.1
               imagePullPolicy: Always
               command:
                 - /usr/local/bin/create_wiki_todo.sh

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
 # Get a random Wikipedia URL by following the redirect
 WIKI_URL=$(curl -sL -o /dev/null -w '%{url_effective}' https://en.wikipedia.org/wiki/Special:Random)
