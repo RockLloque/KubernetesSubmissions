@@ -2,12 +2,14 @@ use anyhow::Result;
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;
 use std::time::Duration;
+use tracing::{info, instrument};
 
 use crate::core::models::{CreateTodo, Todo};
 
 static ORDER_SPACING: i32 = 10_000;
 
 /// Initialize database connection pool and run migrations
+#[instrument(skip(connection_string), fields(connection_string = "***"))]
 pub async fn init_pool(connection_string: &str) -> Result<PgPool> {
     let pool = PgPoolOptions::new()
         .max_connections(5)
@@ -18,10 +20,12 @@ pub async fn init_pool(connection_string: &str) -> Result<PgPool> {
     // Run migrations
     sqlx::migrate!("./migrations").run(&pool).await?;
 
+    info!("Database connection pool initialized and migrations completed");
     Ok(pool)
 }
 
 /// Get all todos ordered by order field
+#[instrument(skip(pool))]
 pub async fn get_todos(pool: &PgPool) -> Result<Vec<Todo>> {
     let todos = sqlx::query_as::<_, Todo>(
         r#"
@@ -40,6 +44,7 @@ pub async fn get_todos(pool: &PgPool) -> Result<Vec<Todo>> {
 }
 
 /// Create a new todo
+#[instrument(skip(pool), fields(title = %todo.title))]
 pub async fn create_todo(pool: &PgPool, todo: &CreateTodo) -> Result<Todo> {
     let last_order: Option<i32> = sqlx::query_scalar(
         r#"

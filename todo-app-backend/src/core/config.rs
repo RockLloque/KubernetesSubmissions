@@ -1,6 +1,7 @@
 use std::time::Duration;
 use anyhow::Result;
 use serde::Deserialize;
+use tracing::{info, instrument};
 
 #[derive(Debug, Deserialize)]
 struct Postgres {
@@ -32,6 +33,7 @@ pub struct Config {
 }
 
 impl Config {
+    #[instrument]
     pub fn init() -> Result<Self> {
         dotenvy::dotenv().ok();
 
@@ -58,7 +60,16 @@ impl Config {
             },
         };
 
-        dbg!(&config);
+        info!(
+            port = %config.port,
+            download_duration_secs = %config.download_duration_secs,
+            image_url = %config.image_url,
+            postgres_host = %config.postgres.host,
+            postgres_port = %config.postgres.port,
+            postgres_db = %config.postgres.db,
+            postgres_user = %config.postgres.user,
+            "Configuration loaded successfully"
+        );
         Ok(config)
     }
 

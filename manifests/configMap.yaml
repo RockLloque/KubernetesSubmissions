@@ -13,3 +13,4 @@ data:
   POSTGRES_HOST: "todo-app-stset-0.postgres-svc.project.svc.cluster.local"
   POSTGRES_DB: "appdb"
   POSTGRES_USER: "appuser"
+  RUST_LOG: "info,sqlx=warn,tower_http=debug"

@@ -62,3 +62,8 @@ spec:
                 secretKeyRef:
                   name: todo-app-secret
                   key: POSTGRES_PASSWORD
+            - name: RUST_LOG
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-cfg
+                  key: RUST_LOG
