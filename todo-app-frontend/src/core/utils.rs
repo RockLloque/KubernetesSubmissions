@@ -4,13 +4,14 @@ use regex::Regex;
 static URL_PATTERN: &str = r"(https?://[^\s<]+)";
 
 /// Converts text containing URLs into HTML with clickable links
-pub fn linkify(text: &str) -> View {
+#[component]
+pub fn linkify(text: String) -> impl IntoView {
     let url_regex = Regex::new(URL_PATTERN).unwrap();
 
     let mut last_end = 0;
     let mut fragments = Vec::new();
 
-    for capture in url_regex.captures_iter(text) {
+    for capture in url_regex.captures_iter(&text) {
         let match_obj = capture.get(0).unwrap();
         let start = match_obj.start();
         let end = match_obj.end();
@@ -23,11 +24,14 @@ pub fn linkify(text: &str) -> View {
         }
 
         // Add the URL as a link
-        fragments.push(view! {
-            <a href={url} target="_blank" rel="noopener noreferrer">
-                {url}
-            </a>
-        }.into_any());
+        fragments.push(
+            view! {
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                    {url}
+                </a>
+            }
+            .into_any(),
+        );
 
         last_end = end;
     }
@@ -45,5 +49,6 @@ pub fn linkify(text: &str) -> View {
 
     view! {
         {fragments}
-    }.into_any()
+    }
+    .into_any()
 }

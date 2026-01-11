@@ -1,6 +1,11 @@
-use crate::{api, components::hero_image::HeroImage, core::models::{Todo, CreateTodo}, core::utils::linkify};
-use leptos::task::spawn_local;
+use crate::{
+    api,
+    components::hero_image::HeroImage,
+    core::models::{CreateTodo, Todo},
+    core::utils::Linkify,
+};
 use leptos::prelude::*;
+use leptos::task::spawn_local;
 
 #[component]
 pub fn Home(hero_image_url: String) -> impl IntoView {
@@ -111,12 +116,10 @@ pub fn Home(hero_image_url: String) -> impl IntoView {
             each=move || tasks.get()
             key=|task| task.id.clone()
             children=move |task| {
-                let title_content = linkify(&task.title);
-                let description_content = linkify(&task.description);
                 view! {
                     <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
-                        <div><strong>{title_content}</strong></div>
-                        <p>{description_content}</p>
+                        <div><strong><Linkify text=task.title.clone() /></strong></div>
+                        <p><Linkify text=task.description.clone() /></p>
                     </div>
                 }
             }
