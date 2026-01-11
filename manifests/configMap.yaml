@@ -6,6 +6,7 @@ metadata:
 data:
   PORT_FRONTEND: "3000"
   PORT_BACKEND: "3001"
+  TODO_BACKEND_SERVICE_HOST: "todo-app-backend-svc.project.svc.cluster.local"
   DOWNLOAD_DURATION: "600"
   IMAGE_URL: "https://picsum.photos/1200/800"
   POSTGRES_PORT: "5432"

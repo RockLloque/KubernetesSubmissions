@@ -1,5 +1,5 @@
 apiVersion: batch/v1
-kind: Cronjob
+kind: CronJob
 metadata:
   namespace: project
   name: todo-app-random-wiki-crnjb
@@ -11,10 +11,21 @@ spec:
         spec:
           containers:
             - name: todo-app-random-wiki-crnjb
-              image: temibonn/todo-app-random-wiki-crnjb:1.0
+              image: temibonn/todo-app-random-wiki-cronjob:1.0
               imagePullPolicy: Always
               command:
                 - /usr/local/bin/create_wiki_todo.sh
+              env:
+                - name: TODO_BACKEND_SERVICE_HOST
+                  valueFrom:
+                    configMapKeyRef:
+                      name: todo-app-cfg
+                      key: TODO_BACKEND_SERVICE_HOST
+                - name: PORT_BACKEND
+                  valueFrom:
+                    configMapKeyRef:
+                      name: todo-app-cfg
+                      key: PORT_BACKEND
           restartPolicy: OnFailure
 
         
