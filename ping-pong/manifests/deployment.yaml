@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ping-pong-dep
-  namespace: exercises
 spec:
   replicas: 1
   selector:
@@ -16,6 +15,7 @@ spec:
       containers:
         - name: ping-pong-app
           image: temibonn/ping-pong:v2.1.2
+          imagePullPolicy: Always
           ports:
             - containerPort: 3001
           env:

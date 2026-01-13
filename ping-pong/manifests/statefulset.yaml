@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: ping-pong-stset
-  namespace: exercises
 spec:
   serviceName: postgres-svc
   replicas: 1
@@ -43,7 +42,6 @@ spec:
         name: postgres-db
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: local-path
         resources:
           requests:
             storage: 10Mi
